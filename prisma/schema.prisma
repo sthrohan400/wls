@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model contestants {
+  id        Int                    @id @default(autoincrement())
+  email     String                 @unique
+  lotteries lotteriesContestants[]
+}
+
+model lotteries {
+  id          Int                    @id @default(autoincrement()) // Draw Number
+  drawDate    DateTime               @unique
+  contestants lotteriesContestants[]
+}
+
+model lotteriesContestants {
+  id           Int                @id @default(autoincrement())
+  ticket       String             @unique
+  lottery      lotteries          @relation(fields: [lotteryId], references: [id])
+  contestant   contestants        @relation(fields: [contestantId], references: [id])
+  lotteryId    Int
+  contestantId Int
+  winners      lotteriesWinners[]
+
+  @@unique([lotteryId, contestantId], map: "lotteryid_contestantid_unique_constraint")
+}
+
+model lotteriesWinners {
+  ticket   String               @unique
+  winner   lotteriesContestants @relation(fields: [winnerId], references: [id])
+  winnerId Int
+}

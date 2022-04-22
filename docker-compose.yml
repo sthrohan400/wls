@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: nest-image:1.0
+    command: bash -c "yarn prisma:dev:deploy && yarn start"
+    volumes:
+      - .:/usr/app
+    depends_on:
+      - dev-database
+    environment:
+      DATABASE_URL: postgresql://test:test123@dev-database:5432/test_db?schema=public # Container to container uses container port not host port
+    ports:
+      - 3000:5000 # Host POrt: Container POrt
+    networks:
+      - local
+  dev-database:
+    image: postgres:13
+    ports:
+      - 5434:5432
+    environment:
+      TZ: UTC
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test123
+      POSTGRES_DB: test_db
+    networks:
+      - local
+  test-database:
+    image: postgres:13
+    ports:
+      - 5435:5432
+    environment:
+      TZ: UTC
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test123
+      POSTGRES_DB: test_db
+    networks:
+      - local
+networks:
+  local:
