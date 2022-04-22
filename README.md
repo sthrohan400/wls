@@ -25,7 +25,7 @@ Lottery with postgresql - No fancy stuffs yet.
 - Verify applicaiton using: http://localhost:3000
 - Check container Logs - docker exec -it {container-name} /bin/sh
 
-## Start Application
+## Start Application With Docker
 
 - CMD ./start-dev.bat
 
