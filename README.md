@@ -11,7 +11,7 @@ Lottery with postgresql - No fancy stuffs yet.
 ## Installation
 
 1. Clone the repository
-2. Install dependencies: npm install & yarn install
+2. Install dependencies: npm install & yarn
 3. Execute:
    Start Dev- `yarn run start:dev`
 
